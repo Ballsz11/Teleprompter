@@ -25,6 +25,8 @@
   var scroller      = $('text-scroller');
   var scriptText    = $('script-text');
   var credit        = $('credit');
+  var spacerTop     = document.querySelector('.spacer--top');
+  var spacerBottom  = document.querySelector('.spacer--bottom');
   var controls      = $('controls');
   var playBtn       = $('play-btn');
   var iconPlay      = $('icon-play');
@@ -139,6 +141,7 @@
     fontSlider.value = String(state.fontSize);
     fontValue.textContent = state.fontSize + 'px';
     computeMetrics();
+    layoutEnd();
     var max = maxScroll();
     if (scroller.scrollTop > max) scroller.scrollTop = max;
   }
@@ -202,6 +205,7 @@
   function renderScript() {
     scriptText.textContent = state.script;
     computeMetrics();
+    layoutEnd();
   }
 
   function updateMeta() {
@@ -236,6 +240,16 @@
 
   function pxPerSecond() {
     return pxPerWord * state.wpm / 60;
+  }
+
+  // Size the tail spacer so the end credit comes to rest exactly on the
+  // reading guide line when the prompt finishes scrolling. The guide offset
+  // is measured from the top spacer (custom properties read back as raw
+  // tokens such as clamp(...), so they can't be parsed directly).
+  function layoutEnd() {
+    var guideOffset = spacerTop ? spacerTop.offsetHeight : 0;
+    var tail = Math.max(0, scroller.clientHeight - guideOffset - credit.offsetHeight);
+    spacerBottom.style.height = tail + 'px';
   }
 
   /* ---------------------------------------------------------
@@ -331,6 +345,7 @@
       scroller.scrollTop = 0;
       requestAnimationFrame(function () {
         computeMetrics();
+        layoutEnd();
         updateProgress();
       });
       try { stage.focus({ preventScroll: true }); } catch (e) { stage.focus(); }
@@ -582,6 +597,7 @@
      --------------------------------------------------------- */
   function relayout() {
     computeMetrics();
+    layoutEnd();
     updateProgress();
   }
 

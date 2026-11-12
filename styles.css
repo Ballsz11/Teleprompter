@@ -419,9 +419,10 @@ kbd {
   height: var(--guide-offset);
 }
 
-/* Enough room for the last line to scroll up to the guide line. */
+/* Room below the end credit; layoutEnd() in app.js sizes it so the credit
+   comes to rest on the guide line when the prompt finishes. */
 .spacer--bottom {
-  height: calc(100% - var(--guide-offset) + 60px);
+  height: calc(100% - var(--guide-offset));
 }
 
 .script-text {
