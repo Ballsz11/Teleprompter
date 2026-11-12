@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0e14">
+  <title>Teleprompter</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8E%AC</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="dark">
+
+  <!-- ======================= EDITOR ======================= -->
+  <main id="editor-view" class="view view--editor">
+    <header class="editor-header">
+      <div>
+        <h1>Teleprompter</h1>
+        <p class="tagline">Type or paste your script, then start prompting.</p>
+      </div>
+      <button id="theme-btn" class="icon-btn" type="button"
+              title="Toggle dark / light mode" aria-label="Toggle dark / light mode">🌙</button>
+    </header>
+
+    <section class="card">
+      <div class="card-row">
+        <label class="card-label" for="script-input">Your script</label>
+        <span id="script-meta" class="meta">0 words</span>
+      </div>
+
+      <textarea id="script-input" rows="12" spellcheck="false"
+                placeholder="Type or paste your script here…&#10;&#10;Each new line becomes a new line on screen."></textarea>
+
+      <div class="editor-actions">
+        <div class="editor-actions-left">
+          <button id="paste-btn" class="btn btn--ghost" type="button">📋 Paste</button>
+          <button id="clear-btn" class="btn btn--ghost" type="button">Clear</button>
+        </div>
+        <button id="start-btn" class="btn btn--primary" type="button">Start prompting ▶</button>
+      </div>
+
+      <p class="hint">Everything is auto-saved in this browser — close the tab and come back later.</p>
+    </section>
+
+    <section class="card card--tips">
+      <h2>Keyboard shortcuts</h2>
+      <ul class="tips-list">
+        <li><kbd>Space</kbd> Play / pause</li>
+        <li><kbd>R</kbd> Restart from the top</li>
+        <li><kbd>↑</kbd> <kbd>↓</kbd> Speed up / down</li>
+        <li><kbd>←</kbd> <kbd>→</kbd> Font smaller / larger</li>
+        <li><kbd>M</kbd> Mirror text</li>
+        <li><kbd>F</kbd> Fullscreen</li>
+        <li><kbd>E</kbd> or <kbd>Esc</kbd> Back to the editor</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- ======================= PROMPTER ======================= -->
+  <div id="prompter-view" class="view view--prompter" hidden>
+    <div id="stage" class="stage" tabindex="-1">
+
+      <div class="progress-track" aria-hidden="true">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+
+      <div id="text-scroller" class="text-scroller" role="region" aria-label="Teleprompter script">
+        <div class="spacer spacer--top" aria-hidden="true"></div>
+        <div id="script-text" class="script-text"></div>
+        <div class="spacer spacer--bottom" aria-hidden="true"></div>
+      </div>
+
+      <div class="guide" aria-hidden="true"></div>
+
+      <div id="controls" class="controls">
+        <div class="transport">
+          <button id="restart-btn" class="ctl-btn" type="button" title="Restart (R)" aria-label="Restart">⟲</button>
+          <button id="play-btn" class="ctl-btn ctl-btn--primary" type="button"
+                  title="Play / pause (Space)" aria-label="Play">
+            <span id="play-icon" aria-hidden="true">▶</span>
+          </button>
+          <span id="time-left" class="time-left" title="Estimated time remaining">0:00</span>
+          <button id="mirror-btn" class="ctl-btn" type="button"
+                  title="Mirror text (M)" aria-pressed="false">Mirror</button>
+          <button id="fullscreen-btn" class="ctl-btn" type="button"
+                  title="Fullscreen (F)" aria-pressed="false" aria-label="Fullscreen">⛶</button>
+          <button id="edit-btn" class="ctl-btn" type="button" title="Back to editor (E / Esc)">✎ Edit</button>
+        </div>
+
+        <div class="settings">
+          <div class="control-group">
+            <span class="ctl-label" id="speed-label">Speed</span>
+            <input type="range" id="speed-slider" min="60" max="400" step="5" value="160"
+                   aria-labelledby="speed-label">
+            <span class="ctl-value" id="speed-value">160 wpm</span>
+          </div>
+          <div class="control-group">
+            <span class="ctl-label" id="font-label">Font</span>
+            <input type="range" id="font-slider" min="20" max="160" step="2" value="52"
+                   aria-labelledby="font-label">
+            <span class="ctl-value" id="font-value">52px</span>
+          </div>
+        </div>
+
+        <div class="shortcuts-hint">
+          Space play/pause · R restart · ↑↓ speed · ←→ font · M mirror · F fullscreen · Esc edit
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
