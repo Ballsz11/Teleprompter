@@ -74,6 +74,8 @@ app.js       scrolling engine, controls, persistence
   (`--accent`, `--bg`, `--surface`, …). Dark and light themes are both defined there.
 - **Guide line position** — `--guide-offset` (how far from the top the reading
   marker sits).
+- **End credit** — the `#credit` block in `index.html` (shown after the script
+  finishes scrolling).
 - **Speed range** — the `min`/`max`/`step` on `#speed-slider` in `index.html`,
   and the clamp in `setWpm()` in `app.js`.
 

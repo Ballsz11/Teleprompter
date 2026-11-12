@@ -24,6 +24,7 @@
   var stage         = $('stage');
   var scroller      = $('text-scroller');
   var scriptText    = $('script-text');
+  var credit        = $('credit');
   var controls      = $('controls');
   var playBtn       = $('play-btn');
   var iconPlay      = $('icon-play');
@@ -151,6 +152,7 @@
 
   function applyMirror() {
     scriptText.classList.toggle('mirrored', state.mirror);
+    credit.classList.toggle('mirrored', state.mirror);
     mirrorBtn.setAttribute('aria-pressed', state.mirror ? 'true' : 'false');
     mirrorBtn.classList.toggle('is-active', state.mirror);
   }

@@ -441,6 +441,35 @@ kbd {
   transform: scaleX(-1);
 }
 
+/* End-of-script credit */
+.credit {
+  max-width: 1100px;
+  margin: clamp(30px, 7vh, 72px) auto 0;
+  padding: 0 clamp(14px, 4vw, 44px);
+  text-align: center;
+  font-size: clamp(12px, 1.3vw, 15px);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.credit__line {
+  display: block;
+  width: 46px;
+  height: 2px;
+  margin: 0 auto 14px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+.credit__name {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.credit.mirrored {
+  transform: scaleX(-1);
+}
+
 /* Reading guide line (near the top of the screen) */
 .guide {
   position: absolute;
