@@ -1,4 +1,4 @@
-# 🎬 Teleprompter
+# Teleprompter
 
 A zero-dependency, responsive teleprompter that runs in any browser — on a phone,
 tablet, laptop, or a big studio monitor. Just open `index.html`.
@@ -7,9 +7,11 @@ tablet, laptop, or a big studio monitor. Just open `index.html`.
 
 - **Works on every screen size** — responsive layout from small phones (portrait
   and landscape) up to 4K displays, with touch-friendly controls and safe-area padding.
-- **Script input** — type manually or paste (the **📋 Paste** button uses the
+- **Script input** — type manually or paste (the **Paste** button uses the
   clipboard API, with a `Ctrl/⌘+V` fallback).
 - **Font size control** — slider or keyboard, 20px–160px.
+- **Text alignment** — left, center, or right, switchable live with the
+  segmented control or the `A` key.
 - **Speed control** — measured in real words-per-minute (60–400 wpm). The scroll
   speed automatically adapts to font size and screen width, so the reading pace
   stays accurate.
@@ -50,6 +52,7 @@ Then open <http://localhost:3000> (or :8000).
 | `R` | Restart from the top |
 | `↑` / `↓` | Speed up / down (±5 wpm) |
 | `←` / `→` (or `+` / `-`) | Font smaller / larger |
+| `A` | Cycle text alignment (left → center → right) |
 | `M` | Mirror text |
 | `F` | Fullscreen |
 | `E` / `Esc` | Back to the editor |

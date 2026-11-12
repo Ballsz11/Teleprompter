@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b0e14">
   <title>Teleprompter</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8E%AC</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0e14'/%3E%3Cpath d='M13 15h38v10H13z' fill='%234f8cff'/%3E%3Cpath d='M19 15l5 10M29 15l5 10M39 15l5 10M49 15l-5 10' stroke='%230b0e14' stroke-width='2'/%3E%3Crect x='13' y='27' width='38' height='24' rx='3' fill='%23eef1f7'/%3E%3Crect x='19' y='34' width='26' height='3' rx='1.5' fill='%239aa4b6'/%3E%3Crect x='19' y='41' width='16' height='3' rx='1.5' fill='%239aa4b6'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-theme="dark">
@@ -13,12 +13,33 @@
   <!-- ======================= EDITOR ======================= -->
   <main id="editor-view" class="view view--editor">
     <header class="editor-header">
-      <div>
-        <h1>Teleprompter</h1>
-        <p class="tagline">Type or paste your script, then start prompting.</p>
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/>
+            <path d="m6.2 5.3 3.1 3.9"/>
+            <path d="m12.4 3.4 3.1 4"/>
+            <path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>
+          </svg>
+        </span>
+        <div>
+          <h1>Teleprompter</h1>
+          <p class="tagline">Type or paste your script, then start prompting.</p>
+        </div>
       </div>
       <button id="theme-btn" class="icon-btn" type="button"
-              title="Toggle dark / light mode" aria-label="Toggle dark / light mode">🌙</button>
+              title="Toggle dark / light mode" aria-label="Switch to light mode">
+        <svg id="icon-sun" class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2"/><path d="M12 20v2"/>
+          <path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/>
+          <path d="M2 12h2"/><path d="M20 12h2"/>
+          <path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+        </svg>
+        <svg id="icon-moon" class="icon is-off" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
     </header>
 
     <section class="card">
@@ -32,10 +53,29 @@
 
       <div class="editor-actions">
         <div class="editor-actions-left">
-          <button id="paste-btn" class="btn btn--ghost" type="button">📋 Paste</button>
-          <button id="clear-btn" class="btn btn--ghost" type="button">Clear</button>
+          <button id="paste-btn" class="btn btn--ghost" type="button">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="8" y="2" width="8" height="4" rx="1"/>
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            </svg>
+            Paste
+          </button>
+          <button id="clear-btn" class="btn btn--ghost" type="button">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 6h18"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              <path d="M10 11v6"/><path d="M14 11v6"/>
+            </svg>
+            Clear
+          </button>
         </div>
-        <button id="start-btn" class="btn btn--primary" type="button">Start prompting ▶</button>
+        <button id="start-btn" class="btn btn--primary" type="button">
+          Start prompting
+          <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 4.5 20 12 7 19.5z"/>
+          </svg>
+        </button>
       </div>
 
       <p class="hint">Everything is auto-saved in this browser — close the tab and come back later.</p>
@@ -48,6 +88,7 @@
         <li><kbd>R</kbd> Restart from the top</li>
         <li><kbd>↑</kbd> <kbd>↓</kbd> Speed up / down</li>
         <li><kbd>←</kbd> <kbd>→</kbd> Font smaller / larger</li>
+        <li><kbd>A</kbd> Cycle text alignment</li>
         <li><kbd>M</kbd> Mirror text</li>
         <li><kbd>F</kbd> Fullscreen</li>
         <li><kbd>E</kbd> or <kbd>Esc</kbd> Back to the editor</li>
@@ -72,27 +113,90 @@
       <div class="guide" aria-hidden="true"></div>
 
       <div id="controls" class="controls">
-        <div class="transport">
-          <button id="restart-btn" class="ctl-btn" type="button" title="Restart (R)" aria-label="Restart">⟲</button>
+
+        <div class="cluster cluster--transport">
+          <button id="restart-btn" class="ctl-btn" type="button" title="Restart (R)" aria-label="Restart">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+            </svg>
+          </button>
+
           <button id="play-btn" class="ctl-btn ctl-btn--primary" type="button"
                   title="Play / pause (Space)" aria-label="Play">
-            <span id="play-icon" aria-hidden="true">▶</span>
+            <svg id="icon-play" class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 4.5 20 12 7 19.5z"/>
+            </svg>
+            <svg id="icon-pause" class="icon icon--fill is-off" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="6" y="4.5" width="4.2" height="15" rx="1.2"/>
+              <rect x="13.8" y="4.5" width="4.2" height="15" rx="1.2"/>
+            </svg>
           </button>
+
           <span id="time-left" class="time-left" title="Estimated time remaining">0:00</span>
+
+          <span class="divider" aria-hidden="true"></span>
+
+          <div class="segmented" role="group" aria-label="Text alignment">
+            <button class="seg-btn align-btn" type="button" data-align="left"
+                    title="Align left (A)" aria-label="Align text left" aria-pressed="false">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 6H3"/><path d="M15 12H3"/><path d="M17 18H3"/>
+              </svg>
+            </button>
+            <button class="seg-btn align-btn" type="button" data-align="center"
+                    title="Align center (A)" aria-label="Align text center" aria-pressed="false">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 6H3"/><path d="M17 12H7"/><path d="M19 18H5"/>
+              </svg>
+            </button>
+            <button class="seg-btn align-btn" type="button" data-align="right"
+                    title="Align right (A)" aria-label="Align text right" aria-pressed="false">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 6H3"/><path d="M21 12H9"/><path d="M21 18H7"/>
+              </svg>
+            </button>
+          </div>
+
+          <span class="divider" aria-hidden="true"></span>
+
           <button id="mirror-btn" class="ctl-btn" type="button"
-                  title="Mirror text (M)" aria-pressed="false">Mirror</button>
+                  title="Mirror text (M)" aria-pressed="false">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h3"/>
+              <path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"/>
+              <path d="M12 2v2"/><path d="M12 8v2"/><path d="M12 14v2"/><path d="M12 20v2"/>
+            </svg>
+            <span>Mirror</span>
+          </button>
+
           <button id="fullscreen-btn" class="ctl-btn" type="button"
-                  title="Fullscreen (F)" aria-pressed="false" aria-label="Fullscreen">⛶</button>
-          <button id="edit-btn" class="ctl-btn" type="button" title="Back to editor (E / Esc)">✎ Edit</button>
+                  title="Fullscreen (F)" aria-pressed="false" aria-label="Fullscreen">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+              <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+              <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+              <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+            </svg>
+          </button>
+
+          <button id="edit-btn" class="ctl-btn" type="button" title="Back to editor (E / Esc)">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21.2 6.8a2.8 2.8 0 0 0-4-4L3.8 16.2a2 2 0 0 0-.5.8l-1.3 4.4a.5.5 0 0 0 .6.6l4.4-1.3a2 2 0 0 0 .8-.5Z"/>
+              <path d="m15 5 4 4"/>
+            </svg>
+            <span>Edit</span>
+          </button>
         </div>
 
-        <div class="settings">
+        <div class="cluster cluster--settings">
           <div class="control-group">
             <span class="ctl-label" id="speed-label">Speed</span>
             <input type="range" id="speed-slider" min="60" max="400" step="5" value="160"
                    aria-labelledby="speed-label">
             <span class="ctl-value" id="speed-value">160 wpm</span>
           </div>
+          <span class="divider" aria-hidden="true"></span>
           <div class="control-group">
             <span class="ctl-label" id="font-label">Font</span>
             <input type="range" id="font-slider" min="20" max="160" step="2" value="52"
@@ -102,7 +206,7 @@
         </div>
 
         <div class="shortcuts-hint">
-          Space play/pause · R restart · ↑↓ speed · ←→ font · M mirror · F fullscreen · Esc edit
+          Space play/pause · R restart · ↑↓ speed · ←→ font · A align · M mirror · F fullscreen · Esc edit
         </div>
       </div>
     </div>

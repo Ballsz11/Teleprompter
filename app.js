@@ -26,11 +26,15 @@
   var scriptText    = $('script-text');
   var controls      = $('controls');
   var playBtn       = $('play-btn');
-  var playIcon      = $('play-icon');
+  var iconPlay      = $('icon-play');
+  var iconPause     = $('icon-pause');
+  var iconSun       = $('icon-sun');
+  var iconMoon      = $('icon-moon');
   var restartBtn    = $('restart-btn');
   var mirrorBtn     = $('mirror-btn');
   var fullscreenBtn = $('fullscreen-btn');
   var editBtn       = $('edit-btn');
+  var alignButtons  = document.querySelectorAll('.align-btn');
   var speedSlider   = $('speed-slider');
   var speedValue    = $('speed-value');
   var fontSlider    = $('font-slider');
@@ -47,6 +51,7 @@
     fontSize: window.innerWidth <= 720 ? 34 : 52,
     wpm: 160,
     mirror: false,
+    align: 'left',
     theme: 'dark'
   };
 
@@ -75,6 +80,7 @@
       if (isFinite(s.fontSize)) state.fontSize = clamp(+s.fontSize, 20, 160);
       if (isFinite(s.wpm)) state.wpm = clamp(+s.wpm, 60, 400);
       if (typeof s.mirror === 'boolean') state.mirror = s.mirror;
+      if (s.align === 'left' || s.align === 'center' || s.align === 'right') state.align = s.align;
       if (s.theme === 'light' || s.theme === 'dark') state.theme = s.theme;
     } catch (e) { /* corrupted or unavailable storage — keep defaults */ }
   }
@@ -119,9 +125,12 @@
      --------------------------------------------------------- */
   function applyTheme() {
     document.body.setAttribute('data-theme', state.theme);
-    themeBtn.textContent = state.theme === 'dark' ? '☀️' : '🌙';
+    var dark = state.theme === 'dark';
+    iconSun.classList.toggle('is-off', !dark);
+    iconMoon.classList.toggle('is-off', dark);
+    themeBtn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', state.theme === 'dark' ? '#0b0e14' : '#f2f4f9');
+    if (meta) meta.setAttribute('content', dark ? '#0b0e14' : '#f2f4f9');
   }
 
   function applyFont() {
@@ -144,6 +153,26 @@
     scriptText.classList.toggle('mirrored', state.mirror);
     mirrorBtn.setAttribute('aria-pressed', state.mirror ? 'true' : 'false');
     mirrorBtn.classList.toggle('is-active', state.mirror);
+  }
+
+  function applyAlign() {
+    scriptText.style.textAlign = state.align;
+    for (var i = 0; i < alignButtons.length; i++) {
+      var btn = alignButtons[i];
+      btn.setAttribute('aria-pressed', btn.getAttribute('data-align') === state.align ? 'true' : 'false');
+    }
+  }
+
+  function setAlign(value) {
+    if (value !== 'left' && value !== 'center' && value !== 'right') return;
+    state.align = value;
+    applyAlign();
+    saveState();
+  }
+
+  function cycleAlign() {
+    var order = ['left', 'center', 'right'];
+    setAlign(order[(order.indexOf(state.align) + 1) % order.length]);
   }
 
   function setFontSize(px) {
@@ -241,7 +270,7 @@
       scroller.scrollTop = max;
       updateProgress();
       setPlaying(false);
-      toast('📄 End of script');
+      toast('End of script');
       return;
     }
 
@@ -258,7 +287,8 @@
   function setPlaying(v) {
     if (v === playing) return;
     playing = v;
-    playIcon.textContent = playing ? '⏸' : '▶';
+    iconPlay.classList.toggle('is-off', playing);
+    iconPause.classList.toggle('is-off', !playing);
     playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
     if (playing) {
       lastTs = 0;
@@ -309,7 +339,7 @@
 
   function startPrompting() {
     if (!state.script.trim()) {
-      toast('✍️ Write or paste a script first');
+      toast('Write or paste a script first');
       textarea.focus();
       return;
     }
@@ -407,7 +437,7 @@
       var text = await navigator.clipboard.readText();
       if (!text) { toast('Clipboard is empty'); return; }
       insertAtCursor(text);
-      toast('📋 Pasted');
+      toast('Pasted from clipboard');
     } catch (e) {
       textarea.focus();
       var mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
@@ -451,6 +481,14 @@
   editBtn.addEventListener('click', goToEditor);
   fullscreenBtn.addEventListener('click', toggleFullscreen);
   mirrorBtn.addEventListener('click', function () { setMirror(!state.mirror); });
+
+  for (var a = 0; a < alignButtons.length; a++) {
+    (function (btn) {
+      btn.addEventListener('click', function () {
+        setAlign(btn.getAttribute('data-align'));
+      });
+    })(alignButtons[a]);
+  }
 
   speedSlider.addEventListener('input', function () {
     setWpm(Number(speedSlider.value));
@@ -514,6 +552,10 @@
       case 'M':
         setMirror(!state.mirror);
         break;
+      case 'a':
+      case 'A':
+        cycleAlign();
+        break;
       case 'f':
       case 'F':
         toggleFullscreen();
@@ -565,6 +607,7 @@
   applyFont();
   applyWpm();
   applyMirror();
+  applyAlign();
   updateMeta();
   syncFullscreenBtn();
   showView('editor');
